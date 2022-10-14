@@ -9,7 +9,7 @@ const uuid = require('./helpers/uuid');
 const app = express();
 const PORT = 3001;
 
-
+var noteList;
 //setting up home page
 app.use(express.static('public'))
 //
@@ -51,22 +51,53 @@ app.post('/api/notes', (req, res) => {
         //adding a unique ID to the object newNote
         newNote.id = uuid()
         //call down the list we have 
-        const rawList = (fs.readFile('./db/db.json', "utf8", (err) =>
-            err ? console.error(err) : console.log('Read file')))
-        // console.log(rawList)
-        const noteList = JSON.parse(rawList)
-        console.log(noteList)
-        console.log(typeof noteList)
-        // //push new note into the list
+        const noteList = fs.readFileSync('./db/db.json', 'utf8'
+            //    , (error, data) => {
+            // if (error) {
+            //     console.log(error);
+            //     return;
+            // }
+            // noteList = data
+            // console.log(noteList)
+            // console.log("we read the files");
+            //}
+        )
+        console.log("after reading file")
         noteList.push(newNote)
-        console.log(noteList)
-        fs.writeFile("./db/db.json", JSON.stringify(noteList), (err) =>
-            err ? console.error(err) : console.log('Wrote file!'))
+
+        // console.log("after making the variable")
+        // console.log(noteList)
+        // console.log(newNote)
+        // noteList.push(newNote)
+        //next need to add my new note to the array of previous notes
+        //lastly update the db.json file
+
     }
-    res.json(noteList);
+    // res.json(noteList);
 })
 
 app.listen(PORT, () => {
     console.log(`Example app listening at http://localhost:${PORT}`);
 
 });
+
+
+
+
+
+
+
+
+
+
+      // const rawList = (fs.readFile('./db/db.json', "utf8", (err) =>
+        //     err ? console.error(err) : console.log('Read file')))
+        // // console.log(rawList)
+        // const noteList = JSON.parse(rawList)
+        // console.log(noteList)
+        // console.log(typeof noteList)
+        // // //push new note into the list
+        // noteList.push(newNote)
+        // console.log(noteList)
+        // fs.writeFile("./db/db.json", JSON.stringify(noteList), (err) =>
+        //     err ? console.error(err) : console.log('Wrote file!'))
