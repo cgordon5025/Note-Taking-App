@@ -70,7 +70,7 @@ app.post('/api/notes', (req, res) => {
 })
 
 app.delete('/api/notes/:id', (req, res) => {
-    console.log('ddelete button clicked')
+    console.log('delete button clicked')
     //lets call back down the file
     fs.readFile("./db/db.json", function (err, data) {
 
@@ -79,15 +79,23 @@ app.delete('/api/notes/:id', (req, res) => {
 
         // Converting to JSON
         const noteList = JSON.parse(data);
-        noteID = req.params.id
-        console.log(noteList);
-        //lets remove it now
-        //how do it
-        for (let i = 0; i < noteList; i++) {
+        //
+        const noteID = req.params.id
+        console.log(noteID)
+        console.log(typeof noteID)
+        for (let i = 0; i < noteList.length; i++) {
+            console.log('for loop')
+            console.log(noteList[i].id)
             if (noteList[i].id == noteID) {
-                noteList.splice(i, 0)
+                console.log(i)
+                console.log("spliced the id and removed from list")
+                //splice needs to be 1, so it removed a single item from array
+                noteList.splice(i, 1)
+                console.log(noteList)
             }
         }
+        console.log("Outside of loop")
+        console.log(noteList)
         //trying to write file
         fs.writeFile('./db/db.json', JSON.stringify(noteList), (err) =>
             err ? console.error(err) : console.log('Written file!'))
