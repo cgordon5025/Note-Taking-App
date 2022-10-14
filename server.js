@@ -51,19 +51,23 @@ app.post('/api/notes', (req, res) => {
         //adding a unique ID to the object newNote
         newNote.id = uuid()
         //call down the list we have 
-        const noteList = fs.readFileSync('./db/db.json', 'utf8'
-            //    , (error, data) => {
-            // if (error) {
-            //     console.log(error);
-            //     return;
-            // }
-            // noteList = data
-            // console.log(noteList)
-            // console.log("we read the files");
-            //}
-        )
-        console.log("after reading file")
-        noteList.push(newNote)
+        fs.readFile("./db/db.json", function (err, data) {
+
+            // Check for errors
+            if (err) throw err;
+
+            // Converting to JSON
+            const noteList = JSON.parse(data);
+            noteList.push(newNote)
+            console.log(noteList); // Print users 
+
+        })
+        // fs.writeFile('./db/db.json', noteList, (err) =>
+        //     err ? console.error(err) : console.log('Written file!'))
+        //lets write the file
+
+
+        // noteList.push(newNote)
 
         // console.log("after making the variable")
         // console.log(noteList)
