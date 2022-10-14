@@ -7,7 +7,11 @@ const fs = require('fs')
 //importing this from activities to create a unique id for the items
 const uuid = require('./helpers/uuid');
 const app = express();
-const PORT = 3001;
+//Old port for testing
+// const PORT = 3001;
+//Port for Heroku
+const PORT = process.env.PORT || 3001;
+
 
 var noteList;
 //setting up home page
