@@ -39,6 +39,7 @@ app.post('/api/notes', (req, res) => {
     // res.json(notes)
     //deconstruct it first 
     const { title, text } = req.body;
+    console.log(title, text)
     //check we have it
     // console.log(title, text)
     // If all the required properties are present
@@ -61,7 +62,7 @@ app.post('/api/notes', (req, res) => {
             noteList.push(newNote)
             console.log(noteList);
             //trying to write file
-            fs.writeFile('./db/db.json', JSON.stringify(noteList), (err) =>
+            fs.writeFile('./db/db.json', JSON.stringify(noteList, null, 4), (err) =>
                 err ? console.error(err) : console.log('Written file!'))
             res.json(noteList);
         })
