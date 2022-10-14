@@ -3,8 +3,8 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
-
-if (window.location.pathname === '/notes') {
+console.log("Linked the script")
+if (window.location.pathname === '/api/notes') {
   noteTitle = document.querySelector('.note-title');
   noteText = document.querySelector('.note-textarea');
   saveNoteBtn = document.querySelector('.save-note');
@@ -25,6 +25,7 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
 
+//get notes is fetching the info from previous notes
 const getNotes = () =>
   fetch('/api/notes', {
     method: 'GET',
@@ -33,15 +34,19 @@ const getNotes = () =>
     },
   });
 
+//here we are saving the info from the notes int the side
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
+    //pay attention to the post
     headers: {
       'Content-Type': 'application/json',
     },
+    //this line is important
     body: JSON.stringify(note),
   });
 
+//look here too, we're deleting the note
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: 'DELETE',
@@ -49,7 +54,9 @@ const deleteNote = (id) =>
       'Content-Type': 'application/json',
     },
   });
-
+//save the surrent note and then set attributes to readonly, cannot alter
+//and now we set the value of the notes to the active
+//active
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
@@ -110,8 +117,12 @@ const handleNewNoteView = (e) => {
 
 const handleRenderSaveBtn = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
+    //if either of the values are missing we want to hide the save button, as there is nothing to save
+    console.log('button hiding')
     hide(saveNoteBtn);
   } else {
+    console.log('button showing')
+    //if we have something we want to show it
     show(saveNoteBtn);
   }
 };
@@ -119,7 +130,7 @@ const handleRenderSaveBtn = () => {
 // Render the list of note titles
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
-  if (window.location.pathname === '/notes') {
+  if (window.location.pathname === '/api/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
 
@@ -165,7 +176,7 @@ const renderNoteList = async (notes) => {
     noteListItems.push(li);
   });
 
-  if (window.location.pathname === '/notes') {
+  if (window.location.pathname === '/api/notes') {
     noteListItems.forEach((note) => noteList[0].append(note));
   }
 };
@@ -173,7 +184,7 @@ const renderNoteList = async (notes) => {
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
-if (window.location.pathname === '/notes') {
+if (window.location.pathname === '/api/notes') {
   saveNoteBtn.addEventListener('click', handleNoteSave);
   newNoteBtn.addEventListener('click', handleNewNoteView);
   noteTitle.addEventListener('keyup', handleRenderSaveBtn);
