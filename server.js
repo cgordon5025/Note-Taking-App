@@ -10,10 +10,10 @@ const app = express();
 //Old port for testing
 // const PORT = 3001;
 //Port for Heroku
+//use the established port on HEROKU, if not use 3001 as the port
+//allows us to connect to their servers and an available port
 const PORT = process.env.PORT || 3001;
 
-
-var noteList;
 //setting up home page
 app.use(express.static('public'))
 //
@@ -21,10 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-
-// app.get('/', (req, res) => {
-//     res.sendFile(path.join(__dirname, './public/index.html'))
-// })
 //lets retrieve the html page for the basic layout
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'))
